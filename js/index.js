@@ -19,6 +19,8 @@
       5. Add a countdown timer - when the time is up, end the quiz, display the score and highlight the correct answers
 *************************** */
 
+const radioQuiz = document.querySelector(".list-group-item");
+const submitQz=document.querySelector("#btnSubmit");
 window.addEventListener('DOMContentLoaded', () => {
   const start = document.querySelector('#start');
   start.addEventListener('click', function (e) {
@@ -44,6 +46,20 @@ window.addEventListener('DOMContentLoaded', () => {
       o: ['Sydney', 'Canberra', 'Melbourne', 'Perth'],
       a: 1,
     },
+    {
+      q:'Where does the sun rise?',
+      o: ['East', 'West' ,'North','South'],
+      a: 0,
+
+    },
+    {
+      q:'Which is the largest living animal on earth?',
+      o: ['Elephant','Antarctic Blue whale','Giraffe','Mouse'],
+      a: 2,
+    },
+     
+
+    
   ];
 
   // function to Display the quiz questions and answers from the object
@@ -60,6 +76,8 @@ window.addEventListener('DOMContentLoaded', () => {
                     </ul>
                     <div>&nbsp;</div>`;
       quizWrap.innerHTML = quizDisplay;
+      
+
     });
   };
 
@@ -68,23 +86,47 @@ window.addEventListener('DOMContentLoaded', () => {
     let score = 0;
     quizArray.map((quizItem, index) => {
       for (let i = 0; i < 4; i++) {
-        //highlight the li if it is the correct answer
+//highlight the li if it is the correct answer
         let li = `li_${index}_${i}`;
         let r = `radio_${index}_${i}`;
         liElement = document.querySelector('#' + li);
         radioElement = document.querySelector('#' + r);
 
         if (quizItem.a == i) {
+
           //change background color of li element here
+           liElement.style.color = "green";
         }
 
-        if (radioElement.checked) {
-          // code for task 1 goes here
+        if (radioElement.checked && quizItem.a == i) {
+          score++;                    
         }
       }
     });
+    console.log(score);
+    document.getElementById('score').innerHTML = score;
   };
+
+  submitQz.addEventListener("click",calculateScore);
+  
 
   // call the displayQuiz function
   displayQuiz();
+
+  //adding timer
+var sec = 60;
+var time = setInterval(myTimer, 1000);
+
+function myTimer() {
+    document.getElementById('time').innerHTML = sec + " seconds";
+    sec--;
+    if (sec == -1) {
+        clearInterval(time);
+        // alert("Time out!! :(");
+        calculateScore();
+    }
+}
+
 });
+
+
